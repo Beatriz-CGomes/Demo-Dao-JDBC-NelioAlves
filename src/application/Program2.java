@@ -18,6 +18,15 @@ public class Program2 {
 		depDao.insert(newDep);
 		System.out.println("Inserted! New id = " + newDep.getId());
 
+		System.out.println("\n*** TEST 2: seller findById *** ");
+		Department department = depDao.findById(1);
+		System.out.println(department);
+
+		System.out.println("\n*** TEST 3: seller update *** ");
+		department = depDao.findById(8);
+		department.setName("Clothers");
+		depDao.update(department);
+		System.out.println("Update complete");
 		sc.close();
 	}
 
