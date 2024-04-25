@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
@@ -27,6 +29,14 @@ public class Program2 {
 		department.setName("Clothers");
 		depDao.update(department);
 		System.out.println("Update complete");
+
+		System.out.println("\n=== TEST 4: seller findyByAll === ");
+		List<Department> list = depDao.findAll();
+		for (Department depart : list) {
+			System.out.println(depart);
+			System.out.println();
+		}
+
 		sc.close();
 	}
 
