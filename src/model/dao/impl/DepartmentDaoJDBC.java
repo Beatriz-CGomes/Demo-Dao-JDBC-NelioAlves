@@ -10,6 +10,7 @@ import java.util.List;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
@@ -62,7 +63,10 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			st.setString(1, obj.getName());
 			st.setInt(2, obj.getId());
 
-			st.executeUpdate();
+			int rowAffect = st.executeUpdate();
+			if (rowAffect < 0) {
+				throw new DbException("ERRO NENHUMA LINHA AFETADA");
+			}
 
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
@@ -74,7 +78,23 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+
+			st = conn.prepareStatement("DELETE FROM department " + "WHERE Id = ? ");
+
+			st.setInt(1, id);
+			int row = st.executeUpdate();
+			if (row == 0) {
+				throw new DbIntegrityException("ID NÃO EXISTE!");
+			}
+
+		} catch (SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+
+		}
 
 	}
 
